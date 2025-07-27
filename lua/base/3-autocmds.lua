@@ -49,6 +49,7 @@ autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
     end
   end,
 })
+
 autocmd({ "VimEnter" }, {
   desc = "Nvim user event that trigger a few ms after nvim starts",
   callback = function()

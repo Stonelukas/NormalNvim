@@ -24,6 +24,7 @@
 
 return {
   -- Which-key
+  ClaudeCode = "󰒋",
   Debugger = "",
   Run = "󰑮",
   Find = "",
@@ -120,6 +121,7 @@ return {
   GreeterRecent = "🌺",
   GreeterYazi = "🦆",
   GreeterSessions = "🔎",
+  GreeterSession = "⚡",
   GreeterProjects = "💼",
   GreeterPlug = "",
 

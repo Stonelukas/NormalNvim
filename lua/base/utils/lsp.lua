@@ -110,7 +110,7 @@ end
 function M.apply_user_lsp_mappings(client, bufnr)
   local lsp_mappings = require("base.4-mappings").lsp_mappings(client, bufnr)
   if not vim.tbl_isempty(lsp_mappings.v) then
-    lsp_mappings.v["<leader>l"] = { desc = utils.get_icon("ActiveLSP", 1, true) .. "LSP" }
+    lsp_mappings.v["<leader>l"] = { desc = utils.get_icon("ActiveLSP", true) .. "LSP" }
   end
   utils.set_mappings(lsp_mappings, { buffer = bufnr })
 end

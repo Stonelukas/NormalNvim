@@ -4,7 +4,7 @@
 -- ----------------------------------------
 
 -- Theme
-vim.g.default_colorscheme = "tokyonight-night"
+vim.g.default_colorscheme = "astrodark"
 
 -- Options --------------------------------------------------------------------
 vim.opt.breakindent = true -- Wrap indent to match  line start.
@@ -28,7 +28,7 @@ vim.opt.linebreak = true -- Wrap lines at 'breakat'.
 vim.opt.number = true -- Show numberline.
 vim.opt.preserveindent = true -- Preserve indent structure as much as possible.
 vim.opt.pumheight = 10 -- Height of the pop up menu.
-vim.opt.relativenumber = false -- Show relative numberline.
+vim.opt.relativenumber = true -- Show relative numberline.
 vim.opt.shiftwidth = 2 -- Number of space inserted for indentation.
 vim.opt.showmode = false -- Disable showing modes in command line.
 vim.opt.showtabline = 2 -- always display tabline.
@@ -71,7 +71,7 @@ vim.g.big_file = { size = 1024 * 5000, lines = 50000 } -- For files bigger than 
 
 -- The next globals are toggleable with <space + l + u>
 vim.g.autoformat_enabled = false -- Enable auto formatting at start.
-vim.g.autopairs_enabled = false -- Enable autopairs at start.
+vim.g.autopairs_enabled = true -- Enable autopairs at start.
 vim.g.cmp_enabled = true -- Enable completion at start.
 vim.g.codeactions_enabled = true -- Enable displaying 💡 where code actions can be used.
 vim.g.codelens_enabled = true -- Enable automatic codelens refreshing for lsp that support it.

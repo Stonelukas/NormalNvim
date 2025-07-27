@@ -161,7 +161,7 @@ return {
       local config = require('session_manager.config')
       return {
         autoload_mode = config.AutoloadMode.Disabled,
-        autosave_last_session = false,
+        autosave_last_session = true,
         autosave_only_in_session = false,
       }
     end,
@@ -176,11 +176,11 @@ return {
       --
       --      This won't be necessary once neovim fixes:
       --      https://github.com/neovim/neovim/issues/12242
-      -- vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-      --   callback = function ()
-      --     session_manager.save_current_session()
-      --   end
-      -- })
+      vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+        callback = function ()
+          session_manager.save_current_session()
+        end
+      })
     end
   },
 
@@ -442,8 +442,8 @@ return {
           mappings = {
             ["<space>"] = false,
             ["<S-CR>"] = "system_open",
-            ["[b"] = "prev_source",
-            ["]b"] = "next_source",
+            ["<S-Tab>"] = "prev_source",
+            ["<Tab>"] = "next_source",
             F = utils.is_available("telescope.nvim") and "find_in_dir" or nil,
             O = "system_open",
             Y = "copy_selector",
@@ -626,7 +626,7 @@ return {
         handler_opts = round_borders, -- Window style
 
         -- Hint mode
-        hint_enable = false, -- Display it as hint.
+        hint_enable = true, -- Display it as hint.
         hint_prefix = "👈 ",
 
         -- Additionally, you can use <space>uH to toggle inlay hints.

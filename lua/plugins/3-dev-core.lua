@@ -146,7 +146,7 @@ return {
       },
       code = {
         sign = false,
-        width = 'block', -- use 'language' if colorcolumn is important for you.
+        width = 'language', -- use 'language' if colorcolumn is important for you.
         right_pad = 1,
       },
       dash = {
@@ -164,7 +164,7 @@ return {
     "brenoprata10/nvim-highlight-colors",
     event = "User BaseFile",
     cmd = { "HighlightColors" }, -- followed by 'On' / 'Off' / 'Toggle'
-    opts = { enabled_named_colors = false },
+    opts = { enabled_named_colors = true },
   },
 
   --  LSP -------------------------------------------------------------------
@@ -176,6 +176,7 @@ return {
   --       https://github.com/nvim-java/nvim-java/pull/376
   {
     "zeioth/nvim-java",
+    enabled = false,
     ft = { "java" },
     dependencies = {
       "MunifTanjim/nui.nvim",
@@ -248,7 +249,6 @@ return {
     },
     opts = {
       registries = {
-        "github:nvim-java/mason-registry",
         "github:mason-org/mason-registry",
       },
       ui = {
@@ -474,6 +474,7 @@ return {
   --  AUTO COMPLETION --------------------------------------------------------
   --  Auto completion engine [autocompletion engine]
   --  https://github.com/hrsh7th/nvim-cmp
+  --  TODO: Use blink.nvim
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -615,12 +616,30 @@ return {
             end
           end, { "i", "s" }),
         },
+        sorting = {
+          priority_weight = 2, -- Higher weight means higher priority.
+          comparators = {
+            require("copilot_cmp.comparators").prioritize,
+
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+          },
+        },
+        -- Here we define the sources for the completion engine.
         sources = cmp.config.sources {
           -- Note: Priority decides the order items appear.
           { name = "nvim_lsp", priority = 1000 },
           { name = "lazydev",  priority = 850 },
           { name = "luasnip",  priority = 750 },
-          { name = "copilot",  priority = 600 },
+          { name = "copilot",  priority = 600,
+            group_index = 1, -- Copilot is always the second group.
+          },
           { name = "buffer",   priority = 500 },
           { name = "path",     priority = 250 },
         },
