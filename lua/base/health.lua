@@ -137,12 +137,12 @@ function M.check()
     {
       cmd = { "dotnet" },
       type = "warn",
-      msg = "Used by compiler.nvim and DAP to operate with dotnet projects (optional)\nNOTE: Make sure you also have the system package dotnet-sdk installed.",
+      msg = "Used by compiler.nvim to operate with dotnet projects (optional)\nNOTE: Make sure you also have the system package dotnet-sdk installed.",
     },
     {
       cmd = { "java" },
       type = "warn",
-      msg = "Used by compiler.nvim and dap to operate with java (Optional)",
+      msg = "Used by compiler.nvim to operate with java (Optional)",
     },
     {
       cmd = { "javac" },

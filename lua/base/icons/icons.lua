@@ -15,7 +15,6 @@
 --      -> heirline-components (misc)
 --      -> Neotree
 --      -> Git
---      -> DAP
 --      -> Telescope
 --      -> Nvim-lightbulb
 --      -> Alpha
@@ -25,7 +24,6 @@
 return {
   -- Which-key
   ClaudeCode = "󰒋",
-  Debugger = "",
   Run = "󰑮",
   Find = "",
   Session = "󱂬",
@@ -35,9 +33,12 @@ return {
   UI = "",
   Test = "󰙨",
   Packages = "󰏖",
-  Docs = "",
+  Docs = "󱔗",
   Git = "󰊢",
   LSP = "",
+  Markdown = "",
+  Preview = "🪟",
+  Peek = "󰂥",
 
   -- Heirline-components - tabline
   BufferClose = "󰅖",
@@ -103,12 +104,6 @@ return {
   GitUnstaged = "✗",
   GitUntracked = "★",
 
-  -- DAP
-  DapBreakpoint = "",
-  DapBreakpointCondition = "",
-  DapBreakpointRejected = "",
-  DapLogPoint = ".>",
-  DapStopped = "󰁕",
 
   -- Telescope
   PromptPrefix = "❯",

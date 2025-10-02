@@ -278,6 +278,48 @@ return {
     end,
   },
 
+  -- peek.nvim [markdown preview]
+  {
+    "toppair/peek.nvim",
+    event = "User BaseDefered",
+    build = "deno task --quiet build:fast",
+    opts = {
+      -- open in windows for linux use 'browser'
+      app = "wslview",
+    },
+    config = function(_, opts) require("peek").setup(opts) end,
+  },
+  -- github-preview.nvim [github preview]
+  {
+    "wallpants/github-preview.nvim",
+    event = "User BaseDefered",
+    opts = {
+      theme = {
+        name = "dark",
+      },
+      cursor_line = {
+        disable = false,
+      },
+    },
+    config = function(_, opts) require("github-preview").setup(opts) end,
+  },
+
+  -- live-server.nvim [html preview]
+  {
+    "barrett-ruth/live-server.nvim",
+    event = "User BaseDefered",
+    opts = {},
+    config = function(_, opts) require("live-server").setup(opts) end,
+  },
+
+  -- omni-preview.nvim [omni preview]
+  -- preview several filtypes in browser or respected app
+  {
+    "sylvanfranklin/omni-preview.nvim",
+    event = "User BaseDefered",
+    opts = {},
+  },
+
   --  mini.indentscope [guides]
   --  https://github.com/echasnovski/mini.indentscope
   {
@@ -470,7 +512,7 @@ return {
           ["<C-h>"] = actions.which_key,
           -- ["<ESC>"] = actions.close,
           ["<C-c>"] = actions.close,
-          ["<C-q>"] = actions.close
+          ["<C-q>"] = actions.close,
         },
         n = {
           ["q"] = actions.close,

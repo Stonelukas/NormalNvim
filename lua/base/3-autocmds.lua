@@ -218,8 +218,6 @@ autocmd("VimEnter", {
     -- Add to menu
     vim.api.nvim_command [[menu PopUp.Format\ \Code <cmd>silent! Format<CR>]]
     vim.api.nvim_command [[menu PopUp.-1- <Nop>]]
-    vim.api.nvim_command [[menu PopUp.Toggle\ \Breakpoint <cmd>:lua require('dap').toggle_breakpoint()<CR>]]
-    vim.api.nvim_command [[menu PopUp.Debugger\ \Continue <cmd>:DapContinue<CR>]]
     vim.api.nvim_command [[menu PopUp.Run\ \Test <cmd>:Neotest run<CR>]]
   end,
 })

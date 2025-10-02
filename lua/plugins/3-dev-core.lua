@@ -19,11 +19,8 @@
 --       -> lazydev                        [lua lsp for nvim plugins]
 
 --       ## AUTO COMPLETION
---       -> nvim-cmp                       [auto completion engine]
---       -> cmp-nvim-buffer                [auto completion buffer]
---       -> cmp-nvim-path                  [auto completion path]
---       -> cmp-nvim-lsp                   [auto completion lsp]
---       -> cmp-luasnip                    [auto completion snippets]
+--       -> blink.cmp                      [auto completion engine]
+--       -> blink-cmp-copilot              [copilot support for blink]
 
 local utils = require("base.utils")
 local utils_lsp = require("base.utils.lsp")
@@ -181,15 +178,10 @@ return {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "neovim/nvim-lspconfig",
-      "mfussenegger/nvim-dap",
       "mason-org/mason.nvim",
     },
     opts = {
-      notifications = {
-        dap = false,
-      },
       -- NOTE: One of these files must be in your project root directory.
-      --       Otherwise the debugger will end in the wrong directory and fail.
       root_markers = {
         'settings.gradle',
         'settings.gradle.kts',
@@ -356,55 +348,62 @@ return {
         -- in 'path', write the name of the plugin directory.
         -- in 'mods', write the word you use to require the module.
         -- in 'words' write words that trigger loading a lazydev path (optionally).
+
+        -- Core & Infrastructure
         { path = "lazy.nvim", mods = { "lazy" } },
+        { path = "plenary.nvim", mods = { "plenary" } },
+        { path = "nui.nvim", mods = { "nui" } },
+        { path = "promise-async", mods = { "promise-async" } },
         { path = "yazi.nvim", mods = { "yazi" } },
         { path = "project.nvim", mods = { "project_nvim", "telescope" } },
         { path = "trim.nvim", mods = { "trim" } },
         { path = "stickybuf.nvim", mods = { "stickybuf" } },
-        { path = "mini.bufremove", mods = { "mini.bufremove" } },
         { path = "smart-splits.nvim", mods = { "smart-splits" } },
         { path = "toggleterm.nvim", mods = { "toggleterm" } },
         { path = "neovim-session-manager.nvim", mods = { "session_manager" } },
         { path = "nvim-spectre", mods = { "spectre" } },
         { path = "neo-tree.nvim", mods = { "neo-tree" } },
-        { path = "nui.nvim", mods = { "nui" } },
         { path = "nvim-ufo", mods = { "ufo" } },
-        { path = "promise-async", mods = { "promise-async" } },
         { path = "nvim-neoclip.lua", mods = { "neoclip", "telescope" } },
         { path = "zen-mode.nvim", mods = { "zen-mode" } },
         { path = "vim-suda", mods = { "suda" } }, -- has vimscript
         { path = "vim-matchup", mods = { "matchup", "match-up", "treesitter-matchup" } }, -- has vimscript
         { path = "hop.nvim", mods = { "hop", "hop-treesitter", "hop-yank" } },
         { path = "nvim-autopairs", mods = { "nvim-autopairs" } },
-        { path = "lsp_signature", mods = { "lsp_signature" } },
-        { path = "nvim-lightbulb", mods = { "nvim-lightbulb" } },
         { path = "hot-reload.nvim", mods = { "hot-reload" } },
         { path = "distroupdate.nvim", mods = { "distroupdate" } },
 
+        -- UI & Theming
         { path = "tokyonight.nvim", mods = { "tokyonight" } },
         { path = "astrotheme", mods = { "astrotheme" } },
         { path = "alpha-nvim", mods = { "alpha" } },
         { path = "nvim-notify", mods = { "notify" } },
+        { path = "mini.animate", mods = { "mini.animate" } },
         { path = "mini.indentscope", mods = { "mini.indentscope" } },
+        { path = "mini.bufremove", mods = { "mini.bufremove" } },
+        { path = "heirline.nvim", mods = { "heirline" } },
         { path = "heirline-components.nvim", mods = { "heirline-components" } },
-        { path = "telescope.nvim", mods = { "telescope" } },
-        { path = "telescope-undo.nvim", mods = { "telescope", "telescope-undo" } },
-        { path = "telescope-fzf-native.nvim", mods = { "telescope", "fzf_lib"  } },
         { path = "dressing.nvim", mods = { "dressing" } },
         { path = "noice.nvim", mods = { "noice", "telescope" } },
         { path = "nvim-web-devicons", mods = { "nvim-web-devicons" } },
-        { path = "lspkind.nvim", mods = { "lspkind" } },
         { path = "nvim-scrollbar", mods = { "scrollbar" } },
-        { path = "mini.animate", mods = { "mini.animate" } },
         { path = "highlight-undo.nvim", mods = { "highlight-undo" } },
         { path = "which-key.nvim", mods = { "which-key" } },
 
+        -- Telescope & Extensions
+        { path = "telescope.nvim", mods = { "telescope" } },
+        { path = "telescope-undo.nvim", mods = { "telescope", "telescope-undo" } },
+        { path = "telescope-fzf-native.nvim", mods = { "telescope", "fzf_lib"  } },
+        { path = "telescope-luasnip.nvim", mods = { "telescope", "luasnip" } },
+
+        -- Treesitter & Syntax
         { path = "nvim-treesitter", mods = { "nvim-treesitter" } },
         { path = "nvim-ts-autotag", mods = { "nvim-ts-autotag" } },
         { path = "nvim-treesitter-textobjects", mods = { "nvim-treesitter", "nvim-treesitter-textobjects" } },
-        { path = "markdown.nvim", mods = { "render-markdown" } },
+        { path = "render-markdown.nvim", mods = { "render-markdown" } },
         { path = "nvim-highlight-colors", mods = { "nvim-highlight-colors" } },
-        { path = "nvim-java", mods = { "java" } },
+
+        -- LSP & Language Support
         { path = "nvim-lspconfig", mods = { "lspconfig" } },
         { path = "mason-lspconfig.nvim", mods = { "mason-lspconfig" } },
         { path = "mason.nvim", mods = { "mason", "mason-core", "mason-registry", "mason-vendor" } },
@@ -412,39 +411,62 @@ return {
         { path = "SchemaStore.nvim", mods = { "schemastore" } },
         { path = "none-ls-autoload.nvim", mods = { "none-ls-autoload" } },
         { path = "none-ls.nvim", mods = { "null-ls" } },
+        { path = "none-ls-external-sources.nvim", mods = { "none-ls-external-sources" } },
         { path = "lazydev.nvim", mods = { "" } },
         { path = "garbage-day.nvim", mods = { "garbage-day" } },
-        { path = "nvim-cmp", mods = { "cmp" } },
-        { path = "cmp_luasnip", mods = { "cmp_luasnip" } },
-        { path = "cmp-buffer", mods = { "cmp_buffer" } },
-        { path = "cmp-path", mods = { "cmp_path" } },
-        { path = "cmp-nvim-lsp", mods = { "cmp_nvim_lsp" } },
+        { path = "lsp_signature", mods = { "lsp_signature" } },
+        { path = "nvim-lightbulb", mods = { "nvim-lightbulb" } },
+        { path = "lspkind.nvim", mods = { "lspkind" } },
 
+        -- Java Support
+        { path = "nvim-java", mods = { "java" } },
+        { path = "nvim-java-core", mods = { "java-core" } },
+        { path = "nvim-java-refactor", mods = { "java-refactor" } },
+        { path = "nvim-java-test", mods = { "java-test" } },
+        { path = "lua-async-await", mods = { "async-await" } },
+        { path = "spring-boot.nvim", mods = { "spring-boot" } },
+
+        -- Completion & Snippets
+        { path = "blink.cmp", mods = { "blink", "blink.cmp" } },
+        { path = "blink-cmp-copilot", mods = { "blink-cmp-copilot" } },
         { path = "LuaSnip", mods = { "luasnip" } },
         { path = "friendly-snippets", mods = { "snippets" } }, -- has vimscript
         { path = "NormalSnippets", mods = { "snippets" } }, -- has vimscript
-        { path = "telescope-luasnip.nvim", mods = { "telescop" } },
+
+        -- Git Integration
         { path = "gitsigns.nvim", mods = { "gitsigns" } },
         { path = "vim-fugitive", mods = { "fugitive" } }, -- has vimscript
+        { path = "vim-rhubarb", mods = { "rhubarb" } }, -- has vimscript
+
+        -- Code Navigation & Analysis
         { path = "aerial.nvim", mods = { "aerial", "telescope", "lualine", "resession" } },
         { path = "litee.nvim", mods = { "litee" } },
         { path = "litee-calltree.nvim", mods = { "litee" } },
+        { path = "gutentags_plus", mods = { "gutentags_plus" } }, -- has vimscript
+        { path = "vim-gutentags", mods = { "vim-gutentags" } }, -- has vimscript
+
+        -- Documentation & Publishing
         { path = "dooku.nvim", mods = { "dooku" } },
         { path = "markdown-preview.nvim", mods = { "mkdp" } }, -- has vimscript
         { path = "markmap.nvim", mods = { "markmap" } },
+        { path = "peek.nvim", mods = { "peek" } },
+        { path = "github-preview.nvim", mods = { "github-preview" } },
+        { path = "live-server.nvim", mods = { "live-server" } },
+        { path = "omni-preview.nvim", mods = { "omni-preview" } },
+
+        -- AI & Assistance
         { path = "neural", mods = { "neural" } },
-        { path = "copilot", mods = { "copilot" } },
+        { path = "copilot.lua", mods = { "copilot" } },
+        { path = "claude-code.nvim", mods = { "claude-code" } },
+
+        -- Development Tools
         { path = "guess-indent.nvim", mods = { "guess-indent" } },
         { path = "compiler.nvim", mods = { "compiler" } },
-        { path = "overseer.nvim", mods = { "overseer", "lualine", "neotest", "resession", "cmp_overseer" } },
-        { path = "nvim-dap", mods = { "dap" } },
-        { path = "nvim-nio", mods = { "nio" } },
-        { path = "nvim-dap-ui", mods = { "dapui" } },
-        { path = "cmp-dap", mods = { "cmp_dap" } },
-        { path = "cmp-copilot", mods = { "cmp_copilot" } },
-        { path = "mason-nvim-dap.nvim", mods = { "mason-nvim-dap" } },
+        { path = "overseer.nvim", mods = { "overseer", "lualine", "neotest", "resession" } },
 
-        { path = "one-small-step-for-vimkind", mods = { "osv" } },
+
+        -- Testing (Neotest)
+        { path = "neotest", mods = { "neotest" } },
         { path = "neotest-dart", mods = { "neotest-dart" } },
         { path = "neotest-dotnet", mods = { "neotest-dotnet" } },
         { path = "neotest-elixir", mods = { "neotest-elixir" } },
@@ -455,9 +477,7 @@ return {
         { path = "neotest-python", mods = { "neotest-python" } },
         { path = "neotest-rust", mods = { "neotest-rust" } },
         { path = "neotest-zig", mods = { "neotest-zig" } },
-        { path = "nvim-coverage.nvim", mods = { "coverage" } },
-        { path = "gutentags_plus", mods = { "gutentags_plus" } }, -- has vimscript
-        { path = "vim-gutentags", mods = { "vim-gutentags" } }, -- has vimscript
+        { path = "nvim-coverage", mods = { "coverage" } },
 
         -- To make it work exactly like neodev, you can add all plugins
         -- without conditions instead like this but it will load slower
@@ -472,179 +492,128 @@ return {
   },
 
   --  AUTO COMPLETION --------------------------------------------------------
-  --  Auto completion engine [autocompletion engine]
-  --  https://github.com/hrsh7th/nvim-cmp
-  --  TODO: Use blink.nvim
+  --  Blink completion engine [autocompletion engine]
+  --  https://github.com/Saghen/blink.cmp
   {
-    "hrsh7th/nvim-cmp",
+    "Saghen/blink.cmp",
     dependencies = {
-      { "hrsh7th/cmp-nvim-lsp" },
-      { "saadparwaiz1/cmp_luasnip"},
-      { "zbirenbaum/copilot-cmp", opts = {} } ,
-      { "hrsh7th/cmp-buffer"} ,
-      { "hrsh7th/cmp-path" },
-      { "onsails/lspkind.nvim" },
+      { "rafamadriz/friendly-snippets" },
+      { "giuxtaposition/blink-cmp-copilot" }, -- Copilot support for blink
     },
+    version = "0.*", -- Use a release tag for stable version
     event = "InsertEnter",
-    opts = function()
-      -- ensure dependencies exist
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-      local lspkind_loaded, lspkind = pcall(require, "lspkind")
-
-      -- border opts
-      local border_opts = {
-        border = "rounded",
-        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-      }
-      local cmp_config_window = (
-        vim.g.lsp_round_borders_enabled and cmp.config.window.bordered(border_opts)
-      ) or cmp.config.window
-
-      -- helper
-      local function has_words_before()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
-      end
-
-      return {
-        enabled = function() -- disable in certain cases on dap.
-          local is_prompt = vim.bo.buftype == "prompt"
-          local is_dap_prompt = utils.is_available("cmp-dap")
-              and vim.tbl_contains(
-                { "dap-repl", "dapui_watches", "dapui_hover" }, vim.bo.filetype)
-          if is_prompt and not is_dap_prompt then
-            return false
-          else
-            return vim.g.cmp_enabled
-          end
-        end,
-        preselect = cmp.PreselectMode.None,
-        formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = (lspkind_loaded and lspkind.cmp_format(utils.get_plugin_opts("lspkind.nvim"))) or nil
-        },
-        snippet = {
-          expand = function(args) luasnip.lsp_expand(args.body) end,
-        },
-        duplicates = {
-          nvim_lsp = 1,
-          lazydev = 1,
-          luasnip = 1,
-          cmp_tabnine = 1,
-          buffer = 1,
-          path = 1,
-        },
-        confirm_opts = {
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = false,
-        },
-        window = {
-          completion = cmp_config_window,
-          documentation = cmp_config_window,
-        },
-        mapping = {
-          ["<PageUp>"] = cmp.mapping.select_prev_item {
-            behavior = cmp.SelectBehavior.Select,
-            count = 8,
-          },
-          ["<PageDown>"] = cmp.mapping.select_next_item {
-            behavior = cmp.SelectBehavior.Select,
-            count = 8,
-          },
-          ["<C-PageUp>"] = cmp.mapping.select_prev_item {
-            behavior = cmp.SelectBehavior.Select,
-            count = 16,
-          },
-          ["<C-PageDown>"] = cmp.mapping.select_next_item {
-            behavior = cmp.SelectBehavior.Select,
-            count = 16,
-          },
-          ["<S-PageUp>"] = cmp.mapping.select_prev_item {
-            behavior = cmp.SelectBehavior.Select,
-            count = 16,
-          },
-          ["<S-PageDown>"] = cmp.mapping.select_next_item {
-            behavior = cmp.SelectBehavior.Select,
-            count = 16,
-          },
-          ["<Up>"] = cmp.mapping.select_prev_item {
-            behavior = cmp.SelectBehavior.Select,
-          },
-          ["<Down>"] = cmp.mapping.select_next_item {
-            behavior = cmp.SelectBehavior.Select,
-          },
-          ["<C-p>"] = cmp.mapping.select_prev_item {
-            behavior = cmp.SelectBehavior.Insert,
-          },
-          ["<C-n>"] = cmp.mapping.select_next_item {
-            behavior = cmp.SelectBehavior.Insert,
-          },
-          ["<C-k>"] = cmp.mapping.select_prev_item {
-            behavior = cmp.SelectBehavior.Insert,
-          },
-          ["<C-j>"] = cmp.mapping.select_next_item {
-            behavior = cmp.SelectBehavior.Insert,
-          },
-          ["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-          ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-          ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-          ["<C-y>"] = cmp.config.disable,
-          ["<C-e>"] = cmp.mapping {
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-          },
-          ["<CR>"] = cmp.mapping.confirm { select = false },
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
+    ---@module "blink.cmp"
+    ---@type blink.cmp.Config
+    opts = {
+      enabled = function()
+        -- Disable in prompt buffers
+        if vim.bo.buftype == "prompt" then
+          return false
+        else
+          return vim.g.cmp_enabled
+        end
+      end,
+      
+      -- Use 'default' keymap preset with some customizations
+      keymap = {
+        preset = "default",
+        ["<C-y>"] = {}, -- Disable C-y
+        ["<C-k>"] = { "select_prev", "fallback" },
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<Tab>"] = {
+          function(cmp)
+            if cmp.snippet_active() then
+              return cmp.snippet_forward()
             else
-              fallback()
+              return cmp.select_next()
             end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
+          end,
+          "fallback"
+        },
+        ["<S-Tab>"] = { 
+          function(cmp)
+            if cmp.snippet_active() then
+              return cmp.snippet_backward()
             else
-              fallback()
+              return cmp.select_prev()
             end
-          end, { "i", "s" }),
+          end,
+          "fallback"
         },
-        sorting = {
-          priority_weight = 2, -- Higher weight means higher priority.
-          comparators = {
-            require("copilot_cmp.comparators").prioritize,
+        ["<PageUp>"] = { "scroll_documentation_up", "fallback" },
+        ["<PageDown>"] = { "scroll_documentation_down", "fallback" },
+      },
 
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            cmp.config.compare.kind,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
+      appearance = {
+        -- Use Nerd Font Mono variant
+        nerd_font_variant = "mono",
+        
+        -- Kind icons from lspkind
+        kind_icons = utils.get_icon("kinds"),
+      },
+
+      completion = {
+        accept = {
+          -- Don't auto insert on selection
+          auto_brackets = {
+            enabled = true,
           },
         },
-        -- Here we define the sources for the completion engine.
-        sources = cmp.config.sources {
-          -- Note: Priority decides the order items appear.
-          { name = "nvim_lsp", priority = 1000 },
-          { name = "lazydev",  priority = 850 },
-          { name = "luasnip",  priority = 750 },
-          { name = "copilot",  priority = 600,
-            group_index = 1, -- Copilot is always the second group.
+        menu = {
+          draw = {
+            -- Show completion menu with kind icons
+            columns = { { "kind_icon" }, { "label", "label_description", gap = 1 } },
           },
-          { name = "buffer",   priority = 500 },
-          { name = "path",     priority = 250 },
+          -- Use rounded borders if enabled
+          border = vim.g.lsp_round_borders_enabled and "rounded" or "none",
+          winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
         },
-      }
-    end,
+        documentation = {
+          auto_show = false, -- Don't auto show docs
+          window = {
+            border = vim.g.lsp_round_borders_enabled and "rounded" or "none",
+            winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+          },
+        },
+      },
+
+      -- Configure sources with priorities similar to nvim-cmp setup
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer", "copilot" },
+        providers = {
+          lsp = {
+            name = "LSP",
+            module = "blink.cmp.sources.lsp",
+            score_offset = 100, -- Highest priority
+          },
+          copilot = {
+            name = "Copilot",
+            module = "blink-cmp-copilot",
+            score_offset = 60,
+          },
+          path = {
+            name = "Path",
+            module = "blink.cmp.sources.path", 
+            score_offset = 40,
+          },
+          buffer = {
+            name = "Buffer",
+            module = "blink.cmp.sources.buffer",
+            score_offset = 20,
+          },
+        },
+      },
+
+      snippets = {
+        preset = "luasnip",
+      },
+
+      -- Use Rust fuzzy matcher for better performance
+      fuzzy = {
+        use_frecency = true,
+        use_proximity = true,
+      },
+    },
   },
 
 }

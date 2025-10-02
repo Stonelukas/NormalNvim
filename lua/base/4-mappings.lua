@@ -26,9 +26,9 @@
 --       -> smart-splits.nvim
 --       -> aerial.nvim
 --       -> litee-calltree.nvim
+--       -> peek.nvim                          [preview]
 --       -> telescope.nvim                     [find]
 --       -> toggleterm.nvim
---       -> dap.nvim                           [debugger]
 --       -> tests                              [tests]
 --       -> nvim-ufo
 --       -> code documentation                 [docs]
@@ -78,10 +78,12 @@ local icons = {
   b = { desc = get_icon("Buffer", true) .. " Buffers" },
   bs = { desc = get_icon("Sort", true) .. " Sort Buffers" },
   c = { desc = get_icon("Run", true) .. " Compiler" },
-  d = { desc = get_icon("Debugger", true) .. " Debugger" },
   tt = { desc = get_icon("Test", true) .. " Test" },
   dc = { desc = get_icon("Docs", true) .. " Docs" },
   g = { desc = get_icon("Git", true) .. " Git" },
+  m = { desc = get_icon("Markdown", true) .. " Markdown" },
+  pr = { desc = get_icon("Preview", true) .. " Preview" },
+  pp = { desc = get_icon("Peek", true) .. " Peek" },
   S = { desc = get_icon("Session", true) .. " Session" },
   t = { desc = get_icon("Terminal", true) .. " Terminal" },
 }
@@ -270,29 +272,29 @@ maps.n["<C-a>"] = { -- to move to the previous position press ctrl + oo
 
 -- packages -----------------------------------------------------------------
 -- lazy
-maps.n["<leader>p"] = icons.p
-maps.n["<leader>pu"] =
+maps.n["<leader>P"] = icons.p
+maps.n["<leader>Pu"] =
   { function() require("lazy").check() end, desc = "Lazy open" }
-maps.n["<leader>pU"] =
+maps.n["<leader>PU"] =
   { function() require("lazy").update() end, desc = "Lazy update" }
 
 -- mason
 if is_available("mason.nvim") then
-  maps.n["<leader>pm"] = { "<cmd>Mason<cr>", desc = "Mason open" }
-  maps.n["<leader>pM"] = { "<cmd>MasonUpdateAll<cr>", desc = "Mason update" }
+  maps.n["<leader>Pm"] = { "<cmd>Mason<cr>", desc = "Mason open" }
+  maps.n["<leader>PM"] = { "<cmd>MasonUpdateAll<cr>", desc = "Mason update" }
 end
 
 -- treesitter
 if is_available("nvim-treesitter") then
-  maps.n["<leader>pT"] = { "<cmd>TSUpdate<cr>", desc = "Treesitter update" }
-  maps.n["<leader>pt"] = { "<cmd>TSInstallInfo<cr>", desc = "Treesitter open" }
+  maps.n["<leader>PT"] = { "<cmd>TSUpdate<cr>", desc = "Treesitter update" }
+  maps.n["<leader>Pt"] = { "<cmd>TSInstallInfo<cr>", desc = "Treesitter open" }
 end
 
 -- nvim updater
-maps.n["<leader>pD"] = { "<cmd>DistroUpdate<cr>", desc = "Distro update" }
-maps.n["<leader>pv"] =
+maps.n["<leader>PD"] = { "<cmd>DistroUpdate<cr>", desc = "Distro update" }
+maps.n["<leader>Pv"] =
   { "<cmd>DistroReadVersion<cr>", desc = "Distro version" }
-maps.n["<leader>pc"] =
+maps.n["<leader>Pc"] =
   { "<cmd>DistroReadChangelog<cr>", desc = "Distro changelog" }
 
 -- buffers/tabs [buffers ]--------------------------------------------------
@@ -532,7 +534,7 @@ maps.c["<Right>"] = {
 
 -- special cases ------------------------------------------------------------
 vim.api.nvim_create_autocmd("BufWinEnter", {
-  desc = "Make q close help, man, quickfix, dap floats",
+  desc = "Make q close help, man, quickfix floats",
   callback = function(args)
     local buftype =
       vim.api.nvim_get_option_value("buftype", { buf = args.buf })
@@ -677,7 +679,7 @@ end
 -- file browsers ------------------------------------
 -- yazi
 if is_available("yazi.nvim") and vim.fn.executable("yazi") == 1 then
-  maps.n["<leader>r"] = {
+  maps.n["<leader>y"] = {
     -- TODO: use 'Yazi toggle' instead once yazi v0.4.0 is released.
     "<cmd>Yazi<CR>",
     desc = "File browser",
@@ -818,6 +820,68 @@ if is_available("litee-calltree.nvim") then
       focus_calltree()
     end,
     desc = "Call tree (outgoing)",
+  }
+end
+
+-- [preview]
+-- peek.nvim
+if is_available("peek.nvim") then
+  -- Open peek.nvim
+  vim.api.nvim_create_user_command(
+    "PeekOpen",
+    function() require("peek").open() end,
+    { desc = "Open peek.nvim" }
+  )
+  -- Close peek.nvim
+  vim.api.nvim_create_user_command(
+    "PeekClose",
+    function() require("peek").close() end,
+    { desc = "Close peek.nvim" }
+  )
+  -- Maps
+  maps.n["<leader>p"] = icons.pr
+  maps.n["<leader>pp"] = icons.pp
+  maps.n["<leader>ppo"] = {
+    function() require("peek").open() end,
+    desc = "Peek.nvim open",
+  }
+  maps.n["<leader>ppc"] = {
+    function() require("peek").close() end,
+    desc = "Peek.nvim close",
+  }
+end
+
+-- github-preview.nvim
+if is_available("github-preview.nvim") then
+  local fns = require("github-preview").fns
+  -- Maps
+  maps.n["<leader>p"] = icons.pr
+  maps.n["<leader>pg"] = icons.g
+  maps.n["<leader>pgt"] = {
+    "<cmd>GithubPreviewToggle<CR>",
+    desc = "GitHub preview toggle",
+  }
+  maps.n["<leader>pgs"] = {
+    function() fns.single_file_toggle() end,
+    desc = "GitHub preview single file toggle",
+  }
+  maps.n["<leader>pgd"] = {
+    function() fns.details_tags_toggle() end,
+    desc = "GitHub preview toggle details tags",
+  }
+end
+
+-- omni-preview.nvim
+if is_available("omni-preview.nvim") then
+  -- Maps
+  maps.n["<leader>p"] = icons.pr
+  maps.n["<leader>po"] = {
+    "<cmd>OmniPreview start<CR>",
+    desc = "Omni-preview open",
+  }
+  maps.n["<leader>pc"] = {
+    "<cmd>OmniPreview stop<CR>",
+    desc = "Omni-preview close",
   }
 end
 
@@ -1020,16 +1084,16 @@ if is_available("telescope.nvim") then
 
   -- extra - compiler
   if is_available("compiler.nvim") and is_available("overseer.nvim") then
-    maps.n["<leader>m"] = icons.c
-    maps.n["<leader>mm"] = {
+    maps.n["<leader>r"] = icons.c
+    maps.n["<leader>rm"] = {
       function() vim.cmd("CompilerOpen") end,
       desc = "Open compiler",
     }
-    maps.n["<leader>mr"] = {
+    maps.n["<leader>rr"] = {
       function() vim.cmd("CompilerRedo") end,
       desc = "Compiler redo",
     }
-    maps.n["<leader>mt"] = {
+    maps.n["<leader>rt"] = {
       function() vim.cmd("CompilerToggleResults") end,
       desc = "compiler results",
     }
@@ -1077,107 +1141,6 @@ maps.t["<C-k>"] =
 maps.t["<C-l>"] =
   { "<cmd>wincmd l<cr>", desc = "Terminal right window navigation" }
 
--- dap.nvim [debugger] -----------------------------------------------------
--- Depending your terminal some F keys may not work. To fix it:
--- modified function keys found with `showkey -a` in the terminal to get key code
--- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
-if is_available("nvim-dap") then
-  maps.n["<leader>d"] = icons.d
-  maps.x["<leader>d"] = icons.d
-
-  -- F keys
-  maps.n["<F5>"] = {
-    function() require("dap").continue() end,
-    desc = "Debugger: Start",
-  }
-  maps.n["<S-F5>"] =
-    { function() require("dap").terminate() end, desc = "Debugger: Stop" }
-  maps.n["<C-F5>"] = {
-    function() require("dap").restart_frame() end,
-    desc = "Debugger: Restart",
-  }
-  maps.n["<F9>"] = {
-    function() require("dap").toggle_breakpoint() end,
-    desc = "Debugger: Toggle Breakpoint",
-  }
-  maps.n["<S-F9>"] = {
-    function()
-      vim.ui.input({ prompt = "Condition: " }, function(condition)
-        if condition then require("dap").set_breakpoint(condition) end
-      end)
-    end,
-    desc = "Debugger: Conditional Breakpoint",
-  }
-  maps.n["<F10>"] =
-    { function() require("dap").step_over() end, desc = "Debugger: Step Over" }
-  maps.n["<S-F10>"] =
-    { function() require("dap").step_back() end, desc = "Debugger: Step Back" }
-  maps.n["<F11>"] =
-    { function() require("dap").step_into() end, desc = "Debugger: Step Into" }
-  maps.n["<S-F11>"] =
-    { function() require("dap").step_out() end, desc = "Debugger: Step Out" }
-
-  -- Space + d
-  maps.n["<leader>db"] = {
-    function() require("dap").toggle_breakpoint() end,
-    desc = "Breakpoint (F9)",
-  }
-  maps.n["<leader>dB"] = {
-    function() require("dap").clear_breakpoints() end,
-    desc = "Clear Breakpoints",
-  }
-  maps.n["<leader>dc"] =
-    { function() require("dap").continue() end, desc = "Start/Continue (F5)" }
-  maps.n["<leader>dC"] = {
-    function()
-      vim.ui.input({ prompt = "Condition: " }, function(condition)
-        if condition then require("dap").set_breakpoint(condition) end
-      end)
-    end,
-    desc = "Conditional Breakpoint (S-F9)",
-  }
-  maps.n["<leader>do"] =
-    { function() require("dap").step_over() end, desc = "Step Over (F10)" }
-  maps.n["<leader>do"] =
-    { function() require("dap").step_back() end, desc = "Step Back (S-F10)" }
-  maps.n["<leader>db"] =
-    { function() require("dap").step_into() end, desc = "Step Into (F11)" }
-  maps.n["<leader>dO"] =
-    { function() require("dap").step_out() end, desc = "Step Out (S-F11)" }
-  maps.n["<leader>dq"] =
-    { function() require("dap").close() end, desc = "Close Session" }
-  maps.n["<leader>dQ"] = {
-    function() require("dap").terminate() end,
-    desc = "Terminate Session (S-F5)",
-  }
-  maps.n["<leader>dp"] =
-    { function() require("dap").pause() end, desc = "Pause" }
-  maps.n["<leader>dr"] =
-    { function() require("dap").restart_frame() end, desc = "Restart (C-F5)" }
-  maps.n["<leader>dR"] =
-    { function() require("dap").repl.toggle() end, desc = "REPL" }
-  maps.n["<leader>ds"] =
-    { function() require("dap").run_to_cursor() end, desc = "Run To Cursor" }
-
-  if is_available("nvim-dap-ui") then
-    maps.n["<leader>dE"] = {
-      function()
-        vim.ui.input({ prompt = "Expression: " }, function(expr)
-          if expr then require("dapui").eval(expr, { enter = true }) end
-        end)
-      end,
-      desc = "Evaluate Input",
-    }
-    maps.x["<leader>dE"] =
-      { function() require("dapui").eval() end, desc = "Evaluate Input" }
-    maps.n["<leader>du"] =
-      { function() require("dapui").toggle() end, desc = "Debugger UI" }
-    maps.n["<leader>dh"] = {
-      function() require("dap.ui.widgets").hover() end,
-      desc = "Debugger Hover",
-    }
-  end
-end
 
 -- testing [tests] -------------------------------------------------
 -- neotest
@@ -1195,10 +1158,6 @@ if is_available("neotest") then
   maps.n["<leader>Tf"] = {
     function() require("neotest").run.run(vim.fn.expand("%")) end,
     desc = "File",
-  }
-  maps.n["<leader>Td"] = {
-    function() require("neotest").run.run({ strategy = "dap" }) end,
-    desc = "Unit in debugger",
   }
   maps.n["<leader>Tt"] = {
     function() require("neotest").summary.toggle() end,
@@ -1319,9 +1278,7 @@ if is_available("claudecode.nvim") then
     if mode == "t" then
       -- In terminal mode, escape first then run command
       vim.cmd("stopinsert")
-      vim.schedule(function()
-        vim.cmd("ClaudeCode")
-      end)
+      vim.schedule(function() vim.cmd("ClaudeCode") end)
     else
       -- Not in terminal mode, run command directly
       vim.cmd("ClaudeCode")
@@ -1343,15 +1300,15 @@ end
 if is_available("claude-code.nvim") then
   maps.n["<leader>a"] = icons.a
   maps.n["<leader>ac"] = {
-    '<cmd>ClaudeCode<cr>',
+    "<cmd>ClaudeCode<cr>",
     desc = "Claude Code",
   }
   maps.n["<leader>aC"] = {
-    '<cmd>ClaudeCodeContinue<cr>',
+    "<cmd>ClaudeCodeContinue<cr>",
     desc = "Claude Code Continue",
   }
   maps.n["<leader>aR"] = {
-    '<cmd>ClaudeCodeResume<cr>',
+    "<cmd>ClaudeCodeResume<cr>",
     desc = "Claude Code Resume",
   }
 end

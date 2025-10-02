@@ -30,11 +30,6 @@ M.apply_default_lsp_settings = function()
     { name = "DiagnosticSignWarn",     text = get_icon("DiagnosticWarn"),         texthl = "DiagnosticSignWarn" },
     { name = "DiagnosticSignHint",     text = get_icon("DiagnosticHint"),         texthl = "DiagnosticSignHint" },
     { name = "DiagnosticSignInfo",     text = get_icon("DiagnosticInfo"),         texthl = "DiagnosticSignInfo" },
-    { name = "DapStopped",             text = get_icon("DapStopped"),             texthl = "DiagnosticWarn" },
-    { name = "DapBreakpoint",          text = get_icon("DapBreakpoint"),          texthl = "DiagnosticInfo" },
-    { name = "DapBreakpointRejected",  text = get_icon("DapBreakpointRejected"),  texthl = "DiagnosticError" },
-    { name = "DapBreakpointCondition", text = get_icon("DapBreakpointCondition"), texthl = "DiagnosticInfo" },
-    { name = "DapLogPoint",            text = get_icon("DapLogPoint"),            texthl = "DiagnosticInfo" }
   }
   for _, sign in ipairs(signs) do
     vim.fn.sign_define(sign.name, sign)
@@ -123,18 +118,24 @@ function M.apply_user_lsp_settings(server_name)
   local server = require("lspconfig")[server_name]
 
   -- Define user server capabilities.
-  M.capabilities = vim.lsp.protocol.make_client_capabilities()
-  M.capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
-  M.capabilities.textDocument.completion.completionItem.snippetSupport = true
-  M.capabilities.textDocument.completion.completionItem.preselectSupport = true
-  M.capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-  M.capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-  M.capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-  M.capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  M.capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-  M.capabilities.textDocument.completion.completionItem.resolveSupport =
-  { properties = { "documentation", "detail", "additionalTextEdits" } }
-  M.capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+  -- Use blink.cmp's capabilities if available, otherwise fall back to default
+  local has_blink, blink = pcall(require, "blink.cmp")
+  if has_blink then
+    M.capabilities = blink.get_lsp_capabilities()
+  else
+    M.capabilities = vim.lsp.protocol.make_client_capabilities()
+    M.capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
+    M.capabilities.textDocument.completion.completionItem.snippetSupport = true
+    M.capabilities.textDocument.completion.completionItem.preselectSupport = true
+    M.capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+    M.capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+    M.capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+    M.capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+    M.capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+    M.capabilities.textDocument.completion.completionItem.resolveSupport =
+    { properties = { "documentation", "detail", "additionalTextEdits" } }
+    M.capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+  end
   M.flags = {}
   local opts = vim.tbl_deep_extend("force", server, { capabilities = M.capabilities, flags = M.flags })
 

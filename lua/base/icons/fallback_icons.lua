@@ -15,7 +15,6 @@
 --      -> heirline-components (misc)
 --      -> Neotree
 --      -> Git
---      -> DAP
 --      -> Telescope
 --      -> Nvim-lightbulb
 --      -> Alpha
@@ -90,12 +89,6 @@ return {
   GitUnstaged = "[U]",
   GitUntracked = "[?]",
 
-  -- DAP
-  DapBreakpoint = "B",
-  DapBreakpointCondition = "C",
-  DapBreakpointRejected = "R",
-  DapLogPoint = "L",
-  DapStopped = ">",
 
   -- Telescope
   PromptPrefix = ">",
